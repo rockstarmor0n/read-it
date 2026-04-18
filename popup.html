@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #f7f6f3;
+        --bg-card: #ffffff;
+        --bg-header: #e3e0db;
+        --bg-badge: #d4d1cb;
+        --bg-btn: #f2f0eb;
+        --border: #e0ddd6;
+        --border-card: #e8e5de;
+        --text-primary: #1a1a1a;
+        --text-secondary: #555;
+        --text-muted: #aaa9a4;
+        --text-faint: #bbb;
+        --text-header: #2a2a2a;
+        --text-badge: #888;
+        --accent: #378ADD;
+        --btn-hover: #eae8e2;
+        --trash-color: #ccc;
+        --trash-hover: #e05555;
+      }
+
+      .dark {
+        --bg: #1e1e1e;
+        --bg-card: #272727;
+        --bg-header: #2e2b27;
+        --bg-badge: #3a3733;
+        --bg-btn: #333;
+        --border: #333;
+        --border-card: #303030;
+        --text-primary: #f0f0f0;
+        --text-secondary: #aaa;
+        --text-muted: #666;
+        --text-faint: #555;
+        --text-header: #e0e0e0;
+        --text-badge: #888;
+        --accent: #5BA4E5;
+        --btn-hover: #3a3a3a;
+        --trash-color: #555;
+        --trash-hover: #e05555;
+      }
+
+      body {
+        font-family: sans-serif;
+        width: 320px;
+        background: var(--bg);
+        color: var(--text-primary);
+        font-size: 13px;
+        transition: background 0.2s, color 0.2s;
+      }
+
+      #main, #settings-view { padding: 16px 18px; }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2px;
+      }
+      .header-left { display: flex; align-items: center; gap: 10px; }
+      .title { font-size: 13px; font-weight: 500; color: var(--text-primary); letter-spacing: -0.01em; }
+      .saved-count { font-size: 11px; color: var(--text-muted); }
+      .header-right { display: flex; align-items: center; gap: 8px; }
+
+      .icon-btn {
+        background: none; border: none; cursor: pointer;
+        color: var(--text-muted); font-size: 14px;
+        padding: 2px 4px; border-radius: 4px; line-height: 1;
+      }
+      .icon-btn:hover { color: var(--text-secondary); background: var(--bg-btn); }
+
+      .theme-btn {
+        background: none; border: 0.5px solid var(--border);
+        color: var(--text-muted); font-size: 11px;
+        padding: 3px 8px; border-radius: 20px; cursor: pointer; line-height: 1.4;
+      }
+      .theme-btn:hover { background: var(--bg-btn); color: var(--text-secondary); }
+
+      .subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
+      .divider { height: 0.5px; background: var(--border); margin: 0 -18px 14px; }
+
+      .group-block { margin-bottom: 16px; }
+      .group-label {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 8px; padding: 6px 10px;
+        background: var(--bg-header); border-radius: 6px;
+      }
+      .group-label-left { display: flex; align-items: center; gap: 7px; }
+      .group-name { font-size: 11px; font-weight: 500; color: var(--text-header); letter-spacing: 0.01em; }
+      .group-count {
+        font-size: 10px; color: var(--text-badge);
+        background: var(--bg-badge); padding: 1px 6px; border-radius: 10px;
+      }
+      .trash-group {
+        background: none; border: none; cursor: pointer;
+        color: var(--trash-color); font-size: 13px; padding: 2px 4px; line-height: 1;
+      }
+      .trash-group:hover { color: var(--trash-hover); }
+
+      .queue-item {
+        background: var(--bg-card); border-radius: 8px;
+        border: 0.5px solid var(--border-card); padding: 10px 12px; margin-bottom: 6px;
+      }
+      .next-label {
+        font-size: 9px; color: var(--accent); text-transform: uppercase;
+        letter-spacing: 0.07em; font-weight: 700; margin-bottom: 5px;
+      }
+      .item-top {
+        display: flex; align-items: flex-start;
+        justify-content: space-between; gap: 6px; margin-bottom: 3px;
+      }
+      .item-url {
+        display: block; font-size: 12px; font-weight: 500; color: var(--text-primary);
+        text-decoration: none; white-space: nowrap; overflow: hidden;
+        text-overflow: ellipsis; flex: 1; min-width: 0;
+      }
+      .item-url:hover { text-decoration: underline; }
+      .item-url.dimmed { font-weight: 400; color: var(--text-secondary); }
+      .trash-item {
+        background: none; border: none; cursor: pointer;
+        color: var(--trash-color); font-size: 12px;
+        padding: 0 2px; line-height: 1; flex-shrink: 0;
+      }
+      .trash-item:hover { color: var(--trash-hover); }
+      .item-note {
+        font-size: 11px; color: var(--text-faint); margin-bottom: 7px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .item-actions { display: flex; gap: 6px; }
+      .action-btn {
+        background: var(--bg-btn); border: none; color: var(--text-muted);
+        font-size: 10px; padding: 3px 8px; border-radius: 4px; cursor: pointer;
+      }
+      .action-btn:hover { background: var(--btn-hover); color: var(--text-secondary); }
+
+      #empty-state {
+        color: var(--text-faint); font-size: 12px; text-align: center;
+        padding: 28px 0; line-height: 1.9;
+      }
+
+      .settings-back {
+        background: none; border: none; cursor: pointer;
+        color: var(--text-muted); font-size: 12px;
+        margin-bottom: 16px; padding: 0;
+      }
+      .settings-back:hover { color: var(--text-primary); }
+      .settings-title { font-size: 13px; font-weight: 500; margin-bottom: 16px; }
+      .settings-group { margin-bottom: 18px; }
+      .settings-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: block; }
+      .settings-hint { font-size: 11px; color: var(--text-faint); line-height: 1.5; margin-top: 6px; }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <div class="header">
+        <div class="header-left">
+          <span class="title">read-it</span>
+          <span class="saved-count" id="saved-count"></span>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" id="settings-btn" title="settings">⚙</button>
+          <button class="theme-btn" id="theme-btn">○ light</button>
+        </div>
+      </div>
+      <div class="subtitle">shift+click any link to save</div>
+      <div class="divider"></div>
+      <div id="queue-list"></div>
+    </div>
+
+    <div id="settings-view" style="display:none;">
+      <button class="settings-back" id="back-btn">← back</button>
+      <div class="settings-title">settings</div>
+      <div class="settings-group">
+        <div class="settings-hint">hover over any link for 0.8s to see an ai-powered preview. powered by jina.ai — no api key needed.</div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
