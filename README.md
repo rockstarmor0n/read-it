@@ -33,4 +33,26 @@ You're deep in a rabbit hole — reading about one thing, finding three more int
 
 Since this extension isn't on the Chrome Web Store yet, you can load it manually:
 
-1. clone this repo
+1. clone this repo 
+git clone https://github.com/rockstarmor0n/read-it.git
+2. open Chrome and go to `chrome://extensions`
+3. enable **Developer mode** (top right)
+4. click **Load unpacked** and select the cloned folder
+5. pin the extension and start browsing
+
+## setup
+
+No API keys needed — works out of the box.
+
+## contributing
+
+Feel free to open issues or PRs. Some ideas for future features:
+- export queue as markdown
+- browser sync across devices
+- publish on chrome
+- firefox support
+- ai group naming
+
+## license
+
+MIT
